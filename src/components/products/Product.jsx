@@ -4,12 +4,14 @@ import numberBrm from "number-brm";
 import { BsCart, BsHeartFill, BsHeart, BsCartFill } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleHeart, addToCart } from "../../context/action/action";
+import { useNavigate } from "react-router-dom";
 
 const Product = ({ data, loading, title, setLimit, btn }) => {
+  const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
   setTimeout(() => {
     setLoader(false);
-  }, 700);
+  }, 500);
   const dispatch = useDispatch();
   const wishes = useSelector((s) => s.heart);
   const cart = useSelector((s) => s.cart);
@@ -18,6 +20,7 @@ const Product = ({ data, loading, title, setLimit, btn }) => {
       <div className="product__img">
         {item?.images.length <= 1 ? (
           <img
+            onClick={() => navigate(`/products/${item?.id}`)}
             src={item?.images[0]}
             alt={item?.title}
             className={`img ${loader ? "img_loading" : "img_loading_disabled"}`}

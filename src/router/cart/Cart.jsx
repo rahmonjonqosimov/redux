@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import numberBrm from "number-brm";
 import { MdDeleteOutline } from "react-icons/md";
 import { motion } from "framer-motion";
@@ -14,11 +14,20 @@ const Cart = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const [loader, setLoader] = useState(true);
+  setTimeout(() => {
+    setLoader(false);
+  }, 500);
   const cart = useSelector((s) => s.cart);
 
   const cartItems = cart?.map((item) => (
     <div key={item?.id} className="cart__item">
-      <img src={item.images[0]} width={100} alt="" />
+      <img
+        src={item.images[0]}
+        width={100}
+        alt=""
+        className={`${loader ? "img_loading" : "img_loading_disabled"}`}
+      />
       <p title={item?.description}>{item?.description}</p>
       <div className="count">
         <button

@@ -1,6 +1,6 @@
 import { TOGGLE_HEART } from "../action/action";
 
-const initialState = [];
+const initialState = JSON.parse(localStorage.getItem("wishlist")) || [];
 
 const toggleWishes = (state, action) => {
   let index = state.findIndex((i) => i.id === action.payload.id);

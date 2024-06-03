@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { BsCart3, BsHeart } from "react-icons/bs";
+import { BsCart3, BsHeart, BsPieChart } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const wishes = useSelector((s) => s.heart);
   const cart = useSelector((s) => s.cart);
-
-  const [show, setShow] = useState(false);
+  const [data, setData] = useState(null);
   const [shrink, setShrink] = useState(false);
   const [value, setValue] = useState("");
   window.addEventListener("scroll", () => {
@@ -17,12 +19,22 @@ const Navbar = () => {
       setShrink(false);
     }
   });
-  // const searchItems = data?.products?.map((item) => (
-  //   <div key={item?.id} className="search__item">
-  //     <img width={100} src={item?.images[0]} alt={item?.title} />
-  //     <p>{item?.description}</p>
-  //   </div>
-  // ));
+  useEffect(() => {
+    axios
+      .get(`https://dummyjson.com/products/search?q=${value}`)
+      .then((res) => setData(res.data.products));
+  }, [value]);
+  const searchItems = data?.map((item) => (
+    <div
+      onClick={() => (navigate(`/products/${item.id}`), setValue(""))}
+      key={item?.id}
+      style={{ cursor: "pointer" }}
+      className="search__item"
+    >
+      <img width={100} src={item?.images[0]} alt={item?.title} />
+      <p>{item?.description}</p>
+    </div>
+  ));
 
   return (
     <section className={`header ${shrink ? "shrink" : ""}`}>
@@ -56,6 +68,12 @@ const Navbar = () => {
                 Savat
               </Link>
               <sup>{cart.length}</sup>
+            </li>
+            <li className="nav__link">
+              <Link to={"/chart"}>
+                <BsPieChart />
+                Chart
+              </Link>
             </li>
           </ul>
         </nav>
