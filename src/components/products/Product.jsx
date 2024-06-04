@@ -28,11 +28,13 @@ const Product = ({ data, loading, title, setLimit, btn }) => {
         ) : (
           <>
             <img
+              onClick={() => navigate(`/products/${item?.id}`)}
               src={item?.images[0]}
               alt={item?.title}
               className={`product__img-1 img`}
             />
             <img
+              onClick={() => navigate(`/products/${item?.id}`)}
               src={item?.images[1]}
               alt={item?.title}
               className="product__img-2 img"
